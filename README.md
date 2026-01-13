@@ -20,6 +20,11 @@ This repo ships the macOS build artifacts for LocalScribe.
 
 - `~/Library/Application Support/localscribe/settings.json`
 
+## Troubleshooting
+
+- If transcription works in dev but not in the packaged app, ensure mic permissions are granted in System Settings → Privacy & Security → Microphone.
+- For local transcription, `whisper.cpp` and its `stream` binary must exist at the paths in settings.
+
 ## Capabilities
 
 - Realtime transcription (local or API).
