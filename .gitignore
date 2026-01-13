@@ -1,5 +1,0 @@
-.venv
-/data/settings.json
-.DS_Store
-__pycache__/
-*.pyc
