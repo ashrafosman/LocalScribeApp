@@ -5,7 +5,7 @@ This repo ships the macOS build artifacts for LocalScribe.
 ## Download
 
 - `tauri-app/src-tauri/target/release/bundle/macos/localscribe.app`
-- `tauri-app/src-tauri/target/release/bundle/dmg/localscribe_0.1.0_aarch64.dmg`
+- `tauri-app/src-tauri/target/release/bundle/macos/localscribe_0.1.0_aarch64.dmg`
 
 ## Prompt Templates
 
