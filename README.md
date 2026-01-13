@@ -16,6 +16,10 @@ This repo ships the macOS build artifacts for LocalScribe.
 1. Open the `.dmg` and drag `localscribe.app` into Applications.
 2. Launch the app and grant microphone permissions when prompted.
 
+## Settings Location (macOS)
+
+- `~/Library/Application Support/localscribe/settings.json`
+
 ## Capabilities
 
 - Realtime transcription (local or API).
