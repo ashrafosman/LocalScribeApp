@@ -1,0 +1,15 @@
+{
+  "calls_output_path": "",
+  "summary_api_url": "https://adb-3438839487639471.11.azuredatabricks.net/serving-endpoints/databricks-claude-sonnet-4-5/invocations",
+  "summary_api_model": "databricks-claude-sonnet-4-5",
+  "summary_api_token": "",
+  "whisper_mode": "local",
+  "whisper_api_url": "https://adb-3438839487639471.11.azuredatabricks.net/serving-endpoints/whisper/invocations",
+  "whisper_api_token": "",
+  "whisper_api_sample_rate": 16000,
+  "whisper_api_chunk_duration": 3,
+  "whisper_cpp_path": "/Users/ashraf.osman/Documents/Work/whisper.cpp",
+  "whisper_stream_path": "/Users/ashraf.osman/Documents/Work/whisper.cpp/stream",
+  "whisper_model_path": "/Users/ashraf.osman/Documents/Work/whisper.cpp/models/ggml-small.en.bin",
+  "whisper_threads": 8
+}

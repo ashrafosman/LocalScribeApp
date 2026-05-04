@@ -1,0 +1,17 @@
+{
+  "name": "local-scribe-tauri",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "postinstall": "node -e \"require('fs').copyFileSync('node_modules/@tauri-apps/api/tauri.js','src/tauri.js')\"",
+    "dev": "tauri dev",
+    "build": "tauri build && bash scripts/postbuild_macos.sh"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.6.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.6.0"
+  }
+}

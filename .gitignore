@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Rust / Tauri
+tauri-app/src-tauri/target/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Env / secrets
+.env
+.env.*
+*.key
+
+# App settings with tokens — use settings.json.example as template
+tauri-app/src-tauri/data/settings.json

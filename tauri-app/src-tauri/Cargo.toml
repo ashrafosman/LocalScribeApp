@@ -1,0 +1,26 @@
+[package]
+name = "local_scribe_tauri"
+version = "1.0.0"
+description = "MyScribe desktop app"
+authors = ["MyScribe"]
+edition = "2021"
+build = "build.rs"
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+tauri = { version = "1.5", features = [ "dialog-open", "clipboard-write-text"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+chrono = { version = "0.4", features = ["serde"] }
+cpal = "0.15"
+dirs-next = "2"
+hound = "3.5"
+libc = "0.2"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+uuid = { version = "1", features = ["v4"] }
+
+[features]
+custom-protocol = ["tauri/custom-protocol"]

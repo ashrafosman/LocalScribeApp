@@ -1,11 +1,11 @@
-# LocalScribe
+# MyScribe
 
-This repo ships the macOS build artifacts for LocalScribe.
+This repo ships the macOS build artifacts for MyScribe.
 
 ## Download
 
-- `tauri-app/src-tauri/target/release/bundle/macos/localscribe.app`
-- `macos/localscribe_0.1.0_aarch64.dmg`
+- `tauri-app/src-tauri/target/release/bundle/macos/MyScribe.app`
+- `macos/MyScribe_1.0.0_aarch64.dmg`
 
 ## Prompt Templates
 
@@ -13,22 +13,33 @@ This repo ships the macOS build artifacts for LocalScribe.
 
 ## Install
 
-1. Open the `.dmg` and drag `localscribe.app` into Applications.
+1. Open the `.dmg` and drag `MyScribe.app` into Applications.
 2. Launch the app and grant microphone permissions when prompted.
 
 ## Settings Location (macOS)
 
-- `~/Library/Application Support/localscribe/settings.json`
+- `~/Library/Application Support/myscribe/settings.json`
 
 ## Troubleshooting
 
 - If transcription works in dev but not in the packaged app, ensure mic permissions are granted in System Settings → Privacy & Security → Microphone.
-- For local transcription, `whisper.cpp` and its `stream` binary must exist at the paths in settings.
+
+## Compliance Notes
+
+- Recording requires in-app consent acknowledgement before it can start.
+- No speaker diarization or speaker identification is used.
+- Local mode processes audio on-device; no audio recording is saved. Text transcripts are stored locally.
+- Transcripts/summaries older than 7 days are deleted after the user approves the retention notice on app launch.
+- Summarization endpoints are restricted to localhost (local) or Databricks URLs; non-compliant URLs are cleared on save and blocked at runtime.
+- AI-generated summaries may be inaccurate; review for accuracy before relying on them.
+- Do not use MyScribe for Legal or People/HR meetings.
+- Do not include personal data unless permitted by policy. See go/llmpolicy for details.
+- Do not share summaries outside Databricks without confirming they contain no confidential information.
 
 ## Capabilities
 
-- Realtime transcription (local or API).
-- Generate key points, action items, and issues on demand.
+- Realtime transcription (local only).
+- Generate key points, action items, and issues on demand using a compliant LLM endpoint.
 - Ask follow-up questions using live notes.
 - View summaries with Markdown rendering.
 

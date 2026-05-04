@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyScribe</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="eyebrow">MyScribe</span>
+          <h1>Total Control</h1>
+          <p class="muted">Realtime transcription and polished summaries.</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn ghost" id="open-about">About</button>
+          <button class="btn ghost" id="toggle-settings">Settings</button>
+        </div>
+      </header>
+
+      <section class="panel settings" id="settings-panel">
+        <div class="panel-header">
+          <div>
+            <span class="eyebrow">Settings</span>
+            <h2>Storage &amp; Model Paths</h2>
+          </div>
+          <button class="btn ghost small" id="close-settings">Close</button>
+        </div>
+        <div class="settings-grid">
+          <label>
+            <span>Transcripts folder</span>
+            <input type="text" id="output-path" placeholder="/Users/.../Transcripts" readonly />
+          </label>
+          <label>
+            <span>Summary API URL</span>
+            <input type="text" id="summary-api-url" placeholder="https://api.yourmodel.com" />
+          </label>
+          <label>
+            <span>Summary model</span>
+            <input type="text" id="summary-model" placeholder="gpt-4o" />
+          </label>
+          <label>
+            <span>Summary API token</span>
+            <input type="password" id="summary-token" placeholder="••••••••" />
+          </label>
+          <div class="status-pill" id="summary-status">LLM: unknown</div>
+          <div class="settings-actions">
+            <button class="btn ghost small" id="download-model">Download / Update Whisper model</button>
+          </div>
+        </div>
+        <button class="btn primary" id="save-settings">Save Settings</button>
+      </section>
+
+      <section class="main-grid">
+        <article class="panel session">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow">Session</span>
+              <div class="status-pill" id="status-pill" data-status="idle">Idle</div>
+            </div>
+          </div>
+          <div class="session-meta">
+            <div>
+              <span class="label">Meeting Name</span>
+              <p class="value" id="meeting-name-display">Not recording</p>
+            </div>
+            <div>
+              <span class="label">Elapsed</span>
+              <p class="value" id="elapsed">00:00:00</p>
+            </div>
+          </div>
+          <div class="form-stack">
+            <label>
+              <span>Meeting name</span>
+              <input type="text" id="meeting-name" placeholder="Weekly sync" />
+            </label>
+            <label>
+              <span>Audio device</span>
+              <select id="device-select"></select>
+            </label>
+            <label>
+              <span>Summary template</span>
+              <select id="prompt-select"></select>
+            </label>
+          </div>
+          <div class="button-row">
+            <button class="btn primary" id="start-recording">Start Recording</button>
+            <button class="btn danger" id="stop-recording" disabled>Stop</button>
+            <button class="btn ghost" id="refresh-devices">Refresh Devices</button>
+          </div>
+          <p class="hint" id="session-hint">Ready to capture your next conversation.</p>
+          <div class="model-download" id="model-download" data-state="hidden">
+            <div class="model-download-header">
+              <span>Whisper model</span>
+              <span id="model-download-percent">0%</span>
+            </div>
+            <div class="model-download-bar" id="model-download-bar">
+              <span class="model-download-fill" id="model-download-fill"></span>
+            </div>
+            <div class="model-download-meta" id="model-download-meta">Waiting for download.</div>
+          </div>
+        </article>
+
+        <article class="panel transcript">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow">Live Transcript</span>
+              <div class="chip" id="transcript-source" data-ready="false">Source: Unknown</div>
+            </div>
+            <div class="panel-actions">
+              <button class="btn ghost small" id="toggle-scroll">Auto-scroll: On</button>
+              <button class="btn ghost small" id="copy-transcript">Copy</button>
+            </div>
+          </div>
+          <div class="transcript-stream" id="transcript-stream">
+            <p class="muted">Waiting for new audio...</p>
+          </div>
+        </article>
+
+        <article class="panel summary">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow">Summary</span>
+            </div>
+          </div>
+          <div class="tab-row">
+            <button class="tab active" data-tab="keypoints">Key Points</button>
+            <button class="tab" data-tab="actions">Actions</button>
+            <button class="tab" data-tab="issues">Issues</button>
+            <button class="tab" data-tab="ask">Ask</button>
+          </div>
+          <div class="summary-content" id="summary-content">
+            <div class="summary-cards" data-view="keypoints">
+              <div class="card" data-card="keypoints">
+                <h3>Key Points</h3>
+                <div id="keypoints-list" class="markdown-block"></div>
+              </div>
+              <div class="card" data-card="actions">
+                <h3>Action Items</h3>
+                <ul id="actions-list"></ul>
+              </div>
+              <div class="card" data-card="issues">
+                <h3>Issues &amp; Solutions</h3>
+                <div id="issues-list" class="markdown-block"></div>
+              </div>
+            </div>
+            <div class="ask-panel" data-view="ask">
+              <h3>Ask the notes</h3>
+              <p class="muted">Use the live transcript to answer quick questions.</p>
+              <textarea id="ask-input" placeholder="Ask about decisions, owners, or timelines..."></textarea>
+              <div class="button-row">
+                <button class="btn primary small" id="ask-submit">What should I ask next?</button>
+                <button class="btn ghost small" id="ask-last">What was the last topic</button>
+              </div>
+              <div class="response" id="ask-response">No answers yet.</div>
+            </div>
+          </div>
+          <p class="hint" id="summary-ready">Checking model readiness...</p>
+        </article>
+      </section>
+
+      <section class="panel library">
+        <div class="panel-header">
+          <div>
+            <span class="eyebrow">Library</span>
+            <h2>Recent Recordings</h2>
+          </div>
+        </div>
+        <div class="library-list" id="library-list"></div>
+      </section>
+    </div>
+
+    <div class="modal" id="summary-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Summary</h3>
+          <div class="modal-actions">
+            <button class="btn ghost small" id="summary-copy">Copy</button>
+            <button class="btn ghost small" id="summary-close">Close</button>
+          </div>
+        </div>
+        <div class="markdown-block" id="summary-modal-body"></div>
+      </div>
+    </div>
+
+    <div class="modal" id="about-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>About MyScribe</h3>
+          <button class="btn ghost small" id="about-close">Close</button>
+        </div>
+        <div class="markdown-block" id="about-body">
+          <p><strong>Version:</strong> <span id="about-version"></span></p>
+          <p>MyScribe captures live conversations and turns them into structured notes.</p>
+          <ul>
+            <li>Realtime audio capture with local or API transcription.</li>
+            <li>Generate key points, action items, and issues on demand.</li>
+            <li>Ask follow-up questions from live notes.</li>
+            <li>Organized library with summary viewing.</li>
+          </ul>
+          <p>© 2025 Ashraf Osman</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="consent-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Recording Consent</h3>
+          <button class="btn ghost small" id="consent-cancel">Cancel</button>
+        </div>
+        <div class="modal-body">
+          <p>
+            This meeting will be transcribed by MyScribe. In local mode, processing occurs on-device and no
+            audio recording is saved; a text transcript will be stored locally. No speaker diarization or
+            identification is used. Some jurisdictions require all-party consent before recording/transcription.
+            By continuing, you confirm you have obtained consent from all participants and will stop recording
+            if anyone declines.
+          </p>
+          <p>
+            AI-generated summaries may be inaccurate; review for accuracy before relying on them. Do not use
+            MyScribe for Legal or People/HR meetings. Do not include personal data unless permitted by policy,
+            and do not share summaries outside Databricks without confirming they contain no confidential
+            information. Meeting artifacts are retained locally and deleted after 7 days (per app policy).
+          </p>
+          <label class="consent-check">
+            <input type="checkbox" id="consent-checkbox" />
+            <span>I have notified all participants, obtained consent, and will stop if anyone declines.</span>
+          </label>
+          <div class="button-row">
+            <button class="btn primary" id="consent-accept" disabled>Acknowledge</button>
+            <button class="btn ghost" id="consent-cancel-bottom">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="retention-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Auto-Deletion Notice</h3>
+        </div>
+        <div class="modal-body">
+          <p id="retention-message"></p>
+          <div class="button-row">
+            <button class="btn primary" id="retention-approve">Delete old files</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

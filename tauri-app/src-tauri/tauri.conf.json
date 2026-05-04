@@ -1,0 +1,49 @@
+{
+  "build": {
+    "beforeBuildCommand": "bash scripts/prepare_whisper_resources.sh",
+    "beforeDevCommand": "",
+    "devPath": "../src",
+    "distDir": "../src",
+    "withGlobalTauri": true
+  },
+  "package": {
+    "productName": "MyScribe",
+    "version": "1.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "clipboard": {
+        "writeText": true
+      },
+      "dialog": {
+        "open": true
+      }
+    },
+    "windows": [
+      {
+        "title": "MyScribe",
+        "width": 1280,
+        "height": 800,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "bundle": {
+      "active": true,
+      "targets": [
+        "app",
+        "dmg"
+      ],
+      "identifier": "com.osman.myscribe",
+      "resources": [
+        "resources/whisper"
+      ],
+      "icon": [
+        "icons/icon.icns",
+        "icons/icon.png"
+      ]
+    }
+  }
+}
